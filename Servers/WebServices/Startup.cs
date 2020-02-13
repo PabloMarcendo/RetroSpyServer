@@ -42,7 +42,8 @@ namespace WebServices
             app.UseEndpoints(endpoints =>
             {
                 // PublicServices
-                endpoints.UseSoapEndpoint<PublicServices.Authentication.AuthService>("/AuthService/AuthService.asmx", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
+                endpoints.UseSoapEndpoint<PublicServices.Authentication.AuthService>("/AuthService/AuthService.asmx", new BasicHttpsBinding(), SoapSerializer.XmlSerializer);
+                endpoints.UseSoapEndpoint<PublicServices.Authentication.AuthService>("/", new BasicHttpsBinding(), SoapSerializer.XmlSerializer);
                 //endpoints.UseSoapEndpoint<PublicServices.Competitive.CompetitiveService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
                 //endpoints.UseSoapEndpoint<PublicServices.Direct2Game.Direct2GameService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
 
