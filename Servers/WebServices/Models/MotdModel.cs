@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-namespace PublicServices.Authentication
+﻿using System.Runtime.Serialization;
+
+namespace Models
 {
     [DataContract]
-    public class AuthServiceModel
+    public class MotdModel
     {
         [DataMember]
         public int Id { get; set; }

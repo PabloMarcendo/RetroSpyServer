@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-namespace Sake
+﻿using System.Runtime.Serialization;
+
+namespace Models
 {
     [DataContract]
-    public class StorageServerModel
+    public class AuthModel
     {
         [DataMember]
         public int Id { get; set; }

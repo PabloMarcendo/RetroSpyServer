@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-namespace PublicServices.Direct2Game
+﻿using System.Runtime.Serialization;
+
+namespace Models
 {
     [DataContract]
-    public class Direct2GameServiceModel
+    public class SakeModel
     {
         [DataMember]
         public int Id { get; set; }

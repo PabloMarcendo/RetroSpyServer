@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-namespace PublicServices.Competitive
+﻿using System.Runtime.Serialization;
+
+namespace Models
 {
     [DataContract]
-    public class CompetitiveServiceModel
+    public class CompServiceModel
     {
         [DataMember]
         public int Id { get; set; }

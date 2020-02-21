@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-namespace Motd
+﻿using System.Runtime.Serialization;
+
+namespace Models
 {
     [DataContract]
-    public class MotdServiceModel
+    public class D2GModel
     {
         [DataMember]
         public int Id { get; set; }
