@@ -89,22 +89,22 @@ namespace GameSpyLib.Logging
             switch (level)
             {
                 case LogEventLevel.Verbose:
-                    ServerManagerBase.LogWriter.Log.Verbose(error);
+                    ServerManager.LogWriter.Log.Verbose(error);
                     break;
                 case LogEventLevel.Information:
-                    ServerManagerBase.LogWriter.Log.Information(error);
+                    ServerManager.LogWriter.Log.Information(error);
                     break;
                 case LogEventLevel.Debug:
-                    ServerManagerBase.LogWriter.Log.Debug(error);
+                    ServerManager.LogWriter.Log.Debug(error);
                     break;
                 case LogEventLevel.Error:
-                    ServerManagerBase.LogWriter.Log.Error(error);
+                    ServerManager.LogWriter.Log.Error(error);
                     break;
                 case LogEventLevel.Fatal:
-                    ServerManagerBase.LogWriter.Log.Fatal(error);
+                    ServerManager.LogWriter.Log.Fatal(error);
                     break;
                 case LogEventLevel.Warning:
-                    ServerManagerBase.LogWriter.Log.Warning(error);
+                    ServerManager.LogWriter.Log.Warning(error);
                     break;
             }
         }

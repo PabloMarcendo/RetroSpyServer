@@ -64,7 +64,7 @@ namespace QueryReport.Entity.Structure
         public static bool DeleteGameServer(EndPoint endPoint, string gameName)
         {
             string key = GenerateDedicatedGameServerKey(endPoint, gameName);
-            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.DedicatedServer);
+            var redis = ServerManager.Redis.GetDatabase((int)RedisDBNumber.DedicatedServer);
             return redis.KeyDelete(key);
         }
 

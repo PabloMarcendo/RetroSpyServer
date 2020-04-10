@@ -17,14 +17,14 @@ namespace GameSpyLib.Extensions
         #region General Methods
         public static bool SerializeSet<T>(string key, T value, int dbNumber)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase(dbNumber);
+            var redis = ServerManager.Redis.GetDatabase(dbNumber);
             string jsonStr = JsonConvert.SerializeObject(value);
             return redis.StringSet(key, jsonStr);
         }
 
         public static T SerilizeGet<T>(string key, int dbNumber)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase(dbNumber);
+            var redis = ServerManager.Redis.GetDatabase(dbNumber);
             T t = JsonConvert.DeserializeObject<T>(redis.StringGet(key));
             return t;
         }
@@ -38,9 +38,9 @@ namespace GameSpyLib.Extensions
         {
             List<string> matchKeys = new List<string>();
 
-            foreach (var end in ServerManagerBase.Redis.GetEndPoints())
+            foreach (var end in ServerManager.Redis.GetEndPoints())
             {
-                var server = ServerManagerBase.Redis.GetServer(end);
+                var server = ServerManager.Redis.GetServer(end);
                 foreach (var key in server.Keys(dbNumber, pattern: $"*{subStringOfKey}*"))
                 {
                     matchKeys.Add(key);

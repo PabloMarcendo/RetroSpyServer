@@ -21,6 +21,7 @@
     <Compile Remove="XMLConfig\ServerConfig.%27cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Common\BaseClass\" />
     <Folder Include="Database\DatabaseModel\MySql\" />
     <Folder Include="RetroSpyConfig\" />
   </ItemGroup>

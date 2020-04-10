@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using GameSpyLib.Common;
 using QueryReport.Application;
 
 namespace QueryReport.Entity.Structure.ReportData

@@ -2,36 +2,39 @@
 using GameSpyLib.Database.Entity;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
+using GameSpyLib.Network;
 using GameSpyLib.RetroSpyConfig;
 using Serilog.Events;
 using StackExchange.Redis;
 using System;
 using System.Linq;
-
+using System.Net;
 
 namespace GameSpyLib.Common
 {
-    public abstract class ServerManagerBase
+    public class ServerManager : IDisposable
     {
         public readonly string RetroSpyVersion = "0.5.1";
-        public static string ServerName { get; protected set; }
         public static ConfigManager Config { get; protected set; }
         public static LogWriter LogWriter { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
-        protected object Server;
 
-        protected bool Disposed = false;
+        public static string ServerName { get; protected set; }
 
-        public ServerManagerBase(string serverName)
+        private IDisposable Server;
+
+        public ServerManager(string serverName, Type serverType)
         {
             ServerName = serverName;
+            Server = null;
+
             LogWriter = new LogWriter(serverName);
             StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
             LoadDatabaseConfig();
-            LoadServerConfig();
+            StartServer(serverType);
         }
 
-        public void LoadServerConfig()
+        private void StartServer(Type serverType)
         {
             LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
             LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableContext("Server Name", "Host Name", "Port"));
@@ -39,13 +42,44 @@ namespace GameSpyLib.Common
             // Add all servers
             foreach (ServerConfig cfg in ConfigManager.Config.Servers)
             {
-                StartServer(cfg);
-            }
-            LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
-            LogWriter.ToLog(LogEventLevel.Information, " Server is successfully started! ");
-        }
+                if (cfg.Name == ServerName)
+                {
+                    LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
 
-        protected abstract void StartServer(ServerConfig cfg);
+                    if (!serverType.IsClass)
+                    {
+                        throw new InvalidOperationException("Invalid type");
+                    }
+
+                    if (serverType.IsSubclassOf(typeof(TemplateTcpServer)))
+                    {
+                        TemplateTcpServer server = (TemplateTcpServer)Activator.CreateInstance(serverType, IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+
+                        server.Start();
+
+                        Server = server;
+                    }
+                    else if (serverType.IsSubclassOf(typeof(TemplateUdpServer)))
+                    {
+                        TemplateUdpServer server = (TemplateUdpServer)Activator.CreateInstance(serverType, IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+
+                        server.Start();
+
+                        Server = server;
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid class type");
+                    }
+
+                    LogWriter.ToLog(LogEventLevel.Information, "Server is successfully started! ");
+                    return;
+                }
+            }
+
+            throw new Exception("Invalid server specified!");
+        }
 
         private void LoadDatabaseConfig()
         {
@@ -73,12 +107,17 @@ namespace GameSpyLib.Common
                 default:
                     throw new Exception("Unknown database engine!");
             }
-            LogWriter.Log.Information($"Successfully connected to the {dbConfig.Type}!");
+            LogWriter.Log.Information($"Successfully connected to {dbConfig.Type}!");
 
             RedisConfig redisConfig = ConfigManager.Config.Redis;
             Redis = ConnectionMultiplexer.Connect(redisConfig.RemoteAddress + ":" + redisConfig.RemotePort.ToString());
             LogWriter.Log.Information($"Successfully connected to Redis!");
 
+        }
+
+        public void Dispose()
+        {
+            Server?.Dispose();
         }
     }
 }

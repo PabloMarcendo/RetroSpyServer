@@ -37,7 +37,7 @@ namespace GameSpyLib.Network
         /// <param name="error">Socket error code</param>
         protected override void OnError(SocketError error)
         {
-            ServerManagerBase.LogWriter.Log.Error(error.ToString());
+            ServerManager.LogWriter.Log.Error(error.ToString());
         }
 
     }

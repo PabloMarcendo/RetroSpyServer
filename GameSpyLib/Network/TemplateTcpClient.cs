@@ -21,8 +21,8 @@ namespace GameSpyLib.Network
         /// </summary>
         public TemplateTcpClient() : base
             (
-                ConfigManager.Config.Servers.Where(s => s.Name == ServerManagerBase.ServerName).First().RemoteAddress
-               , ConfigManager.Config.Servers.Where(s => s.Name == ServerManagerBase.ServerName).First().RemotePort
+                ConfigManager.Config.Servers.Where(s => s.Name == ServerManager.ServerName).First().RemoteAddress
+               , ConfigManager.Config.Servers.Where(s => s.Name == ServerManager.ServerName).First().RemotePort
             )
         {
         }
@@ -77,7 +77,7 @@ namespace GameSpyLib.Network
 
         public virtual void ToLog(LogEventLevel level, string text)
         {
-            LogWriter.ToLog(level, $"[{ServerManagerBase.ServerName}] " + text);
+            LogWriter.ToLog(level, $"[{ServerManager.ServerName}] " + text);
         }
     }
 }

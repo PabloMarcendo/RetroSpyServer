@@ -139,7 +139,7 @@ namespace GameSpyLib.Network
 
         public virtual void ToLog(LogEventLevel level, string text)
         {
-            LogWriter.ToLog(level, $"[{ServerManagerBase.ServerName}] " + text);
+            LogWriter.ToLog(level, $"[{ServerManager.ServerName}] " + text);
         }
 
         public virtual void UnknownDataRecived(byte[] text)
