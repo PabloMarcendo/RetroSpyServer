@@ -56,7 +56,10 @@ namespace GameSpyLib.Common
                     {
                         TemplateTcpServer server = (TemplateTcpServer)Activator.CreateInstance(serverType, IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
 
-                        server.Start();
+                        if (!server.Start())
+                        {
+                            throw new Exception("Cannot start the server! Perhaps the server port is being used? ");
+                        }
 
                         Server = server;
                     }
@@ -64,7 +67,10 @@ namespace GameSpyLib.Common
                     {
                         TemplateUdpServer server = (TemplateUdpServer)Activator.CreateInstance(serverType, IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
 
-                        server.Start();
+                        if (!server.Start())
+                        {
+                            throw new Exception("Cannot start the server! Perhaps the server port is being used? ");
+                        }
 
                         Server = server;
                     }
